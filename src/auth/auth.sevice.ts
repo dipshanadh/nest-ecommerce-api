@@ -46,4 +46,8 @@ export class AuthService {
 
 		return { token: user.getSignedJwtToken() }
 	}
+
+	async getCurrentUser(id: string) {
+		return await this.User.findById(id)
+	}
 }

@@ -1,8 +1,8 @@
-import { Controller, Post } from "@nestjs/common"
-import { Body } from "@nestjs/common/decorators"
+import { Controller, Post, Body, UseGuards, Req } from "@nestjs/common"
 
 import { AuthService } from "./auth.sevice"
 import { SignupDto, LoginDto } from "./auth.dto"
+import { AuthGuard } from "./auth.guard"
 
 @Controller("auth")
 export class AuthController {
@@ -16,5 +16,11 @@ export class AuthController {
 	@Post("login")
 	login(@Body() dto: LoginDto) {
 		return this.authService.login(dto)
+	}
+
+	@UseGuards(AuthGuard)
+	@Post("profile")
+	getCurrentUser(@Req() req: Request & { user: { id: string } }) {
+		return this.authService.getCurrentUser(req.user.id)
 	}
 }

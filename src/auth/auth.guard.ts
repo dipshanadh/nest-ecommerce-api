@@ -2,7 +2,7 @@ import {
 	Injectable,
 	CanActivate,
 	ExecutionContext,
-	ForbiddenException,
+	UnauthorizedException,
 } from "@nestjs/common"
 import { IncomingMessage } from "http"
 import * as jwt from "jsonwebtoken"
@@ -22,7 +22,9 @@ export class AuthGuard implements CanActivate {
 
 			return true
 		} catch (err) {
-			throw new ForbiddenException("Not authorized to access this route")
+			throw new UnauthorizedException(
+				"Not authorized to access this route",
+			)
 		}
 	}
 

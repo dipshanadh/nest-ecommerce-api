@@ -2,6 +2,7 @@ import {
 	Injectable,
 	BadRequestException,
 	NotFoundException,
+	ConflictException,
 } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
@@ -20,9 +21,9 @@ export class AuthService {
 		})
 
 		if (user)
-			throw new BadRequestException(
+			throw new ConflictException([
 				"A user already exists with the entered email",
-			)
+			])
 
 		user = await this.User.create(dto)
 
@@ -38,11 +39,13 @@ export class AuthService {
 		}).select("+password")
 
 		if (!user)
-			throw new NotFoundException("No user exists with the entered email")
+			throw new NotFoundException([
+				"No user exists with the entered email",
+			])
 
 		const isMatch = await user.matchPassword(dto.password)
 
-		if (!isMatch) throw new BadRequestException("Invalid password")
+		if (!isMatch) throw new BadRequestException(["Invalid password"])
 
 		return { token: user.getSignedJwtToken() }
 	}

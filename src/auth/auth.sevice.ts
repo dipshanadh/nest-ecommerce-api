@@ -11,7 +11,7 @@ import { IUser } from "../user/user.interface"
 
 import { SignupDto, LoginDto } from "./auth.dto"
 
-@Injectable({})
+@Injectable()
 export class AuthService {
 	constructor(@InjectModel("User") private readonly User: Model<IUser>) {}
 

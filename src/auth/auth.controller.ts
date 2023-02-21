@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UseGuards, HttpCode } from "@nestjs/common"
+import {
+	Controller,
+	Post,
+	Body,
+	UseGuards,
+	HttpCode,
+	Get,
+} from "@nestjs/common"
 
 import { AuthService } from "./auth.sevice"
 import { SignupDto, LoginDto } from "./auth.dto"
@@ -22,7 +29,7 @@ export class AuthController {
 	}
 
 	@UseGuards(AuthGuard)
-	@Post("profile")
+	@Get("profile")
 	getCurrentUser(@User() user) {
 		return { user }
 	}

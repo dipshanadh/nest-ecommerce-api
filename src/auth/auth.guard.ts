@@ -35,7 +35,7 @@ export class AuthGuard implements CanActivate {
 
 			const user = await this.User.findById(decodedToken.id)
 
-			if (!user) throw new error("No user exists with the entered id")
+			if (!user) throw new error("No user exists with the entered ID")
 
 			request.user = user
 

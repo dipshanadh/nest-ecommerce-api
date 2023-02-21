@@ -3,6 +3,8 @@ import { NestFactory } from "@nestjs/core"
 
 import { AppModule } from "./app.module"
 
+import { MongoIdValidationPipe } from "./utils/mongoId-validation.pipe"
+
 async function bootstrap() {
 	const PORT = process.env.PORT
 
@@ -12,6 +14,7 @@ async function bootstrap() {
 		new ValidationPipe({
 			whitelist: true,
 		}),
+		new MongoIdValidationPipe(),
 	)
 
 	await app.listen(PORT)

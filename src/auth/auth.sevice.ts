@@ -30,7 +30,7 @@ export class AuthService {
 		const userObject = user.toObject()
 		delete userObject.password
 
-		return { userObject }
+		return { user: userObject }
 	}
 
 	async login(dto: LoginDto) {

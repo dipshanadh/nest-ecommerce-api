@@ -5,21 +5,39 @@ import {
 	UnauthorizedException,
 } from "@nestjs/common"
 import * as jwt from "jsonwebtoken"
+import { InjectModel } from "@nestjs/mongoose"
 
 import { IncomingMessage } from "http"
+import { Model } from "mongoose"
+import { IUser } from "../user/user.interface"
+import { error } from "console"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-	canActivate(ctx: ExecutionContext): boolean {
+	constructor(@InjectModel("User") private readonly User: Model<IUser>) {}
+
+	async canActivate(ctx: ExecutionContext) {
 		const request: IncomingMessage & { user: unknown } = ctx
 			.switchToHttp()
 			.getRequest()
 
 		try {
 			const token = this.getToken(request)
-			const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
-			request.user = decodedToken
+			interface IDecodedToken {
+				id: string
+			}
+
+			const decodedToken = jwt.verify(
+				token,
+				process.env.JWT_SECRET,
+			) as IDecodedToken
+
+			const user = await this.User.findById(decodedToken.id)
+
+			if (!user) throw new error("No user exists with the entered id")
+
+			request.user = user
 
 			return true
 		} catch (err) {

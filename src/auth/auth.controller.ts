@@ -5,7 +5,6 @@ import { SignupDto, LoginDto } from "./auth.dto"
 import { AuthGuard } from "./auth.guard"
 
 import { User } from "../user/user.decorator"
-import { ValidateUserPipe } from "../user/user.validation.pipe"
 
 @Controller("auth")
 export class AuthController {
@@ -24,7 +23,7 @@ export class AuthController {
 
 	@UseGuards(AuthGuard)
 	@Post("profile")
-	getCurrentUser(@User(ValidateUserPipe) user: unknown) {
-		return user
+	getCurrentUser(@User() user) {
+		return { user }
 	}
 }

@@ -6,7 +6,7 @@ export class SignupDto {
 	})
 	name: string
 
-	@IsEmail(null, { message: "Enter a valid email" })
+	@IsEmail({}, { message: "Enter a valid email" })
 	email: string
 
 	@MinLength(6, { message: "Enter a password atleast 6 characters long" })
@@ -14,7 +14,7 @@ export class SignupDto {
 }
 
 export class LoginDto {
-	@IsEmail(null, { message: "Enter a valid email" })
+	@IsEmail({}, { message: "Enter a valid email" })
 	email: string
 
 	@IsNotEmpty({ message: "Enter a password" })

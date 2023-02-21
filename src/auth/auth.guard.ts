@@ -4,15 +4,16 @@ import {
 	ExecutionContext,
 	UnauthorizedException,
 } from "@nestjs/common"
-import { IncomingMessage } from "http"
 import * as jwt from "jsonwebtoken"
+
+import { IncomingMessage } from "http"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-	canActivate(context: ExecutionContext): boolean {
-		const request = this.getRequest<
-			IncomingMessage & { user?: string | jwt.JwtPayload }
-		>(context)
+	canActivate(ctx: ExecutionContext): boolean {
+		const request: IncomingMessage & { user: unknown } = ctx
+			.switchToHttp()
+			.getRequest()
 
 		try {
 			const token = this.getToken(request)
@@ -28,11 +29,7 @@ export class AuthGuard implements CanActivate {
 		}
 	}
 
-	protected getRequest<T>(context: ExecutionContext): T {
-		return context.switchToHttp().getRequest()
-	}
-
-	protected getToken(request: IncomingMessage): string {
+	protected getToken(request: IncomingMessage) {
 		const authorization = request.headers.authorization
 
 		if (!(authorization && authorization.startsWith("Bearer")))

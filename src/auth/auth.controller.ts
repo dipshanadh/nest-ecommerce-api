@@ -1,15 +1,11 @@
-import {
-	Controller,
-	Post,
-	Body,
-	UseGuards,
-	Req,
-	HttpCode,
-} from "@nestjs/common"
+import { Controller, Post, Body, UseGuards, HttpCode } from "@nestjs/common"
 
 import { AuthService } from "./auth.sevice"
 import { SignupDto, LoginDto } from "./auth.dto"
 import { AuthGuard } from "./auth.guard"
+
+import { User } from "../user/user.decorator"
+import { ValidateUserPipe } from "../user/user.validation.pipe"
 
 @Controller("auth")
 export class AuthController {
@@ -28,7 +24,7 @@ export class AuthController {
 
 	@UseGuards(AuthGuard)
 	@Post("profile")
-	getCurrentUser(@Req() req: Request & { user: { id: string } }) {
-		return this.authService.getCurrentUser(req.user.id)
+	getCurrentUser(@User(ValidateUserPipe) user: unknown) {
+		return user
 	}
 }

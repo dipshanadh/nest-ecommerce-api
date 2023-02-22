@@ -3,6 +3,7 @@ import * as jwt from "jsonwebtoken"
 import * as bcrypt from "bcryptjs"
 
 import { IUser } from "./user.interface"
+import { Role } from "../role/role.enum"
 
 export const UserSchema = new Schema<IUser>({
 	name: {
@@ -19,6 +20,11 @@ export const UserSchema = new Schema<IUser>({
 		required: true,
 		minlength: 6,
 		select: false,
+	},
+	role: {
+		type: String,
+		enum: [Role.Admin, Role.User],
+		default: Role.User,
 	},
 	createdAt: {
 		type: Date,

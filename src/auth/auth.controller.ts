@@ -1,17 +1,8 @@
-import {
-	Controller,
-	Post,
-	Body,
-	UseGuards,
-	HttpCode,
-	Get,
-} from "@nestjs/common"
+import { Controller, Post, Body, HttpCode, Get, Req } from "@nestjs/common"
 
 import { AuthService } from "./auth.sevice"
 import { SignupDto, LoginDto } from "./auth.dto"
-import { AuthGuard } from "./auth.guard"
-
-import { User } from "../user/user.decorator"
+import { Auth } from "./auth.decorator"
 
 @Controller("auth")
 export class AuthController {
@@ -28,9 +19,9 @@ export class AuthController {
 		return this.authService.login(dto)
 	}
 
-	@UseGuards(AuthGuard)
 	@Get("profile")
-	getCurrentUser(@User() user) {
-		return { user }
+	@Auth()
+	getCurrentUser(@Req() req) {
+		return { user: req.user }
 	}
 }

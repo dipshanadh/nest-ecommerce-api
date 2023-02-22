@@ -26,4 +26,10 @@ export class ProductService {
 
 		return { product }
 	}
+
+	async createProduct(product) {
+		const newProduct = await this.Product.create(product)
+
+		return { product: newProduct }
+	}
 }

@@ -4,46 +4,59 @@ import {
 	ExecutionContext,
 	UnauthorizedException,
 } from "@nestjs/common"
-import * as jwt from "jsonwebtoken"
 import { InjectModel } from "@nestjs/mongoose"
+import * as jwt from "jsonwebtoken"
 
 import { IncomingMessage } from "http"
 import { Model } from "mongoose"
 import { IUser } from "../user/user.interface"
-import { error } from "console"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 	constructor(@InjectModel("User") private readonly User: Model<IUser>) {}
 
 	async canActivate(ctx: ExecutionContext) {
-		const request: IncomingMessage & { user: unknown } = ctx
+		const request: IncomingMessage & { user } = ctx
 			.switchToHttp()
 			.getRequest()
 
 		try {
 			const token = this.getToken(request)
 
-			interface IDecodedToken {
-				id: string
-			}
-
-			const decodedToken = jwt.verify(
-				token,
-				process.env.JWT_SECRET,
-			) as IDecodedToken
+			const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET)
 
 			const user = await this.User.findById(decodedToken.id)
 
-			if (!user) throw new error("No user exists with the entered ID")
+			if (!user)
+				throw new UnauthorizedException([
+					"No user found with the entered ID",
+				])
 
 			request.user = user
 
 			return true
 		} catch (err) {
-			throw new UnauthorizedException(
-				"Not authorized to access this route",
-			)
+			switch (err.name) {
+				case "UnauthorizedException":
+					throw err
+
+				case "TokenExpiredError":
+					throw new UnauthorizedException([
+						"Login token expired.",
+						"Please login again.",
+					])
+
+				case "JsonWebTokenError":
+					throw new UnauthorizedException([
+						"Ivalid login token.",
+						"Please login again.",
+					])
+
+				default:
+					throw new UnauthorizedException([
+						"Not authorized to access this resource",
+					])
+			}
 		}
 	}
 

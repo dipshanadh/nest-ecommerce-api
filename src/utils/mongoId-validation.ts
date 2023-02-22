@@ -3,15 +3,21 @@ import {
 	Injectable,
 	PipeTransform,
 	BadRequestException,
+	UsePipes,
+	applyDecorators,
 } from "@nestjs/common"
 import { isValidObjectId } from "mongoose"
 
 @Injectable()
-export class MongoIdValidationPipe implements PipeTransform {
+class MongoIdValidationPipe implements PipeTransform {
 	transform(id: any, metadata: ArgumentMetadata) {
 		if (!isValidObjectId(id))
 			throw new BadRequestException(["Invalid MongoID"])
 
 		return id
 	}
+}
+
+export function ValidateMongoId() {
+	return applyDecorators(UsePipes(MongoIdValidationPipe))
 }

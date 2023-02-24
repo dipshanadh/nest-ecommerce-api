@@ -4,6 +4,8 @@ import { AuthService } from "./auth.sevice"
 import { SignupDto, LoginDto } from "./auth.dto"
 import { Auth } from "./auth.decorator"
 
+import { User } from "../user/user.decorator"
+
 @Controller("auth")
 export class AuthController {
 	constructor(private authService: AuthService) {}
@@ -21,7 +23,7 @@ export class AuthController {
 
 	@Get("profile")
 	@Auth()
-	getCurrentUser(@Req() req) {
-		return { user: req.user }
+	getCurrentUser(@User() user) {
+		return { user }
 	}
 }

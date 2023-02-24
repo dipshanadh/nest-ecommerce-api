@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 
 import { Model } from "mongoose"
+import { ProductDto } from "./product.dto"
 import { IProduct } from "./product.interface"
 
 @Injectable()
@@ -27,9 +28,34 @@ export class ProductService {
 		return { product }
 	}
 
-	async createProduct(product) {
-		const newProduct = await this.Product.create(product)
+	async createProduct(dto: ProductDto) {
+		const newProduct = await this.Product.create(dto)
 
 		return { product: newProduct }
+	}
+
+	async updateProduct(id: string, dto: ProductDto) {
+		const product = await this.Product.findByIdAndUpdate(id, dto, {
+			runValidators: true,
+			new: true,
+		})
+
+		if (!product)
+			throw new NotFoundException([
+				"No product found with the entered ID",
+			])
+
+		return { product }
+	}
+
+	async deleteProduct(id: string) {
+		const product = await this.Product.findByIdAndDelete(id)
+
+		if (!product)
+			throw new NotFoundException([
+				"No product found with the entered ID",
+			])
+
+		return {}
 	}
 }

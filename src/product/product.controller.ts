@@ -1,12 +1,12 @@
-import { Controller, Get, Param, Post, Body } from "@nestjs/common"
+import { Controller, Get, Param, Post, Body, Delete, Put } from "@nestjs/common"
 
 import { ProductService } from "./product.service"
+import { ProductDto } from "./product.dto"
 
 import { Auth } from "../auth/auth.decorator"
-
 import { Role } from "../role/role.enum"
 
-import { ValidateMongoId } from "../utils/mongoId-validation"
+import { MongoIdValidationPipe } from "../utils/mongoId-validation"
 
 @Controller("products")
 export class ProductController {
@@ -17,15 +17,29 @@ export class ProductController {
 		return this.productService.getProducts()
 	}
 
+	@Post()
+	@Auth(Role.Admin)
+	createProduct(@Body() dto: ProductDto) {
+		return this.productService.createProduct(dto)
+	}
+
 	@Get("/:id")
-	@ValidateMongoId()
-	getProduct(@Param("id") id: string) {
+	getProduct(@Param("id", MongoIdValidationPipe) id: string) {
 		return this.productService.getProduct(id)
 	}
 
-	@Post()
+	@Put("/:id")
 	@Auth(Role.Admin)
-	createProduct(@Body() product) {
-		return this.productService.createProduct(product)
+	updateProduct(
+		@Param("id", MongoIdValidationPipe) id: string,
+		@Body() dto: ProductDto,
+	) {
+		return this.productService.updateProduct(id, dto)
+	}
+
+	@Delete("/:id")
+	@Auth(Role.Admin)
+	deleteProduct(@Param("id", MongoIdValidationPipe) id: string) {
+		return this.productService.deleteProduct(id)
 	}
 }

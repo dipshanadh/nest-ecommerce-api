@@ -6,7 +6,7 @@ import { ProductDto } from "./product.dto"
 import { Auth } from "../auth/auth.decorator"
 import { Role } from "../role/role.enum"
 
-import { MongoIdValidationPipe } from "../utils/mongoId-validation"
+import { ValidateMongoId } from "../utils/validate-mongoId"
 
 @Controller("products")
 export class ProductController {
@@ -24,14 +24,14 @@ export class ProductController {
 	}
 
 	@Get("/:id")
-	getProduct(@Param("id", MongoIdValidationPipe) id: string) {
+	getProduct(@Param("id", ValidateMongoId) id: string) {
 		return this.productService.getProduct(id)
 	}
 
 	@Put("/:id")
 	@Auth(Role.Admin)
 	updateProduct(
-		@Param("id", MongoIdValidationPipe) id: string,
+		@Param("id", ValidateMongoId) id: string,
 		@Body() dto: ProductDto,
 	) {
 		return this.productService.updateProduct(id, dto)
@@ -39,7 +39,7 @@ export class ProductController {
 
 	@Delete("/:id")
 	@Auth(Role.Admin)
-	deleteProduct(@Param("id", MongoIdValidationPipe) id: string) {
+	deleteProduct(@Param("id", ValidateMongoId) id: string) {
 		return this.productService.deleteProduct(id)
 	}
 }

@@ -4,7 +4,6 @@ import {
 	IsString,
 	MinLength,
 	IsMobilePhone,
-	IsPhoneNumber,
 } from "class-validator"
 
 export class SignupDto {
@@ -29,4 +28,12 @@ export class LoginDto {
 
 	@IsNotEmpty({ message: "Enter a password" })
 	password: string
+}
+
+export class UpdatePasswordDto {
+	@IsNotEmpty({ message: "Enter current password" })
+	password: string
+
+	@MinLength(6, { message: "Enter new password atleast 6 characters long" })
+	newPassword: string
 }

@@ -8,8 +8,7 @@ import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 
 import { IUser } from "../user/user.interface"
-
-import { SignupDto, LoginDto } from "./auth.dto"
+import { SignupDto, LoginDto, UpdatePasswordDto } from "./auth.dto"
 
 @Injectable()
 export class AuthService {
@@ -48,5 +47,21 @@ export class AuthService {
 		if (!isMatch) throw new BadRequestException(["Invalid password"])
 
 		return { token: user.getSignedJwtToken() }
+	}
+
+	async updatePassword(dto: UpdatePasswordDto, currentUser) {
+		const user = await this.User.findById(currentUser.id).select(
+			"+password",
+		)
+
+		const isMatch = await user.matchPassword(dto.password)
+
+		if (!isMatch) throw new BadRequestException(["Invalid password"])
+
+		user.password = dto.newPassword
+
+		await user.save()
+
+		return { user }
 	}
 }

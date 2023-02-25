@@ -23,7 +23,7 @@ export const ProductSchema = new Schema<IProduct>({
 		type: Number,
 		required: true,
 		default: 1,
-		min: 0,
+		min: 1,
 	},
 	category: {
 		type: String,

@@ -6,7 +6,10 @@ import { Auth } from "./auth.decorator"
 
 import { User } from "../user/user.decorator"
 
-@Controller("auth")
+@Controller({
+	version: "1",
+	path: "auth",
+})
 export class AuthController {
 	constructor(private authService: AuthService) {}
 

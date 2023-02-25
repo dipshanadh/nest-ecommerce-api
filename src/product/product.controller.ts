@@ -8,7 +8,10 @@ import { Role } from "../role/role.enum"
 
 import { ValidateMongoId } from "../utils/validate-mongoId"
 
-@Controller("products")
+@Controller({
+	path: "products",
+	version: "1",
+})
 export class ProductController {
 	constructor(private productService: ProductService) {}
 

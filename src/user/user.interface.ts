@@ -1,8 +1,11 @@
+import { Role } from "../role/role.enum"
+
 export interface IUser {
 	name: string
 	email: string
 	password: string
-	role: "user" | "admin"
+	phone: string
+	role: Role
 	createdAt: Date
 	getSignedJwtToken(): string
 	matchPassword(enteredPwd: string): Promise<boolean>

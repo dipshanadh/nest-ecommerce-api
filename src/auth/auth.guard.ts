@@ -29,7 +29,8 @@ export class AuthGuard implements CanActivate {
 
 			if (!user)
 				throw new UnauthorizedException([
-					"No user found with the entered ID",
+					"User not found",
+					"Please login again",
 				])
 
 			request.user = user
@@ -42,14 +43,14 @@ export class AuthGuard implements CanActivate {
 
 				case "TokenExpiredError":
 					throw new UnauthorizedException([
-						"Login token expired.",
-						"Please login again.",
+						"Login token expired",
+						"Please login again",
 					])
 
 				case "JsonWebTokenError":
 					throw new UnauthorizedException([
-						"Ivalid login token.",
-						"Please login again.",
+						"Ivalid login token",
+						"Please login again",
 					])
 
 				default:

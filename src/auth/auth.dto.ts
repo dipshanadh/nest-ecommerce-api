@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator"
+import {
+	IsEmail,
+	IsNotEmpty,
+	IsString,
+	MinLength,
+	IsMobilePhone,
+	IsPhoneNumber,
+} from "class-validator"
 
 export class SignupDto {
 	@IsString({
@@ -8,6 +15,9 @@ export class SignupDto {
 
 	@IsEmail({}, { message: "Enter a valid email" })
 	email: string
+
+	@IsMobilePhone("ne-NP", {}, { message: "Enter a valid phone number" })
+	phone: string
 
 	@MinLength(6, { message: "Enter a password atleast 6 characters long" })
 	password: string

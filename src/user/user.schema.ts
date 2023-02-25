@@ -21,6 +21,10 @@ export const UserSchema = new Schema<IUser>({
 		minlength: 6,
 		select: false,
 	},
+	phone: {
+		type: String,
+		required: true,
+	},
 	role: {
 		type: String,
 		enum: [Role.Admin, Role.User],

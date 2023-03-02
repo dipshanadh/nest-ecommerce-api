@@ -31,8 +31,14 @@ export const UserSchema = new Schema<IUser>({
 		enum: [Role.Admin, Role.User],
 		default: Role.User,
 	},
-	resetPasswordToken: String,
-	resetPasswordExpire: Date,
+	resetPasswordToken: {
+		type: String,
+		select: false,
+	},
+	resetPasswordExpire: {
+		type: Date,
+		select: false,
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now,
@@ -57,15 +63,15 @@ UserSchema.methods.matchPassword = async function (enteredPwd: string) {
 }
 
 UserSchema.methods.getResetPasswordToken = function () {
-	const resetToken = crypto.randomBytes(20).toString("base64url")
+	const token = crypto.randomBytes(20).toString("base64url")
 
 	this.resetPasswordToken = crypto
 		.createHash("sha256")
-		.update(resetToken)
+		.update(token)
 		.digest("base64")
 
 	// Set expiry to current time plus 10 minutes (10 * 60 * 1000 milliseconds)
-	this.resetPasswordExpire = Date.now() + 5 * 60 * 100
+	this.resetPasswordExpire = new Date().getTime() + 10 * 60 * 100
 
-	return resetToken
+	return token
 }

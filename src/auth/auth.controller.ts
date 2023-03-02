@@ -7,10 +7,18 @@ import {
 	Patch,
 	Query,
 	Req,
+	Put,
 } from "@nestjs/common"
 
+import { Request } from "express"
+
 import { AuthService } from "./auth.sevice"
-import { SignupDto, LoginDto, UpdatePasswordDto } from "./auth.dto"
+import {
+	SignupDto,
+	LoginDto,
+	UpdatePasswordDto,
+	ResetPasswordDto,
+} from "./auth.dto"
 import { Auth } from "./auth.decorator"
 
 import { User } from "../user/user.decorator"
@@ -43,7 +51,15 @@ export class AuthController {
 	}
 
 	@Post("forgot-password")
-	forgotPassword(@Req() req, @Query("email") email) {
+	forgotPassword(@Req() req: Request, @Query("email") email: string) {
 		return this.authService.forgotPassword(req, email)
+	}
+
+	@Put("reset-password")
+	resetPassword(
+		@Body() dto: ResetPasswordDto,
+		@Query("token") token: string,
+	) {
+		return this.authService.resetPassword(dto, token)
 	}
 }

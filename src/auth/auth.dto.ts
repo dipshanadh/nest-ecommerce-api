@@ -37,3 +37,8 @@ export class UpdatePasswordDto {
 	@MinLength(6, { message: "Enter new password atleast 6 characters long" })
 	newPassword: string
 }
+
+export class ResetPasswordDto {
+	@MinLength(6, { message: "Enter a password atleast 6 characters long" })
+	password: string
+}

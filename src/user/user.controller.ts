@@ -17,10 +17,7 @@ import { Role } from "../role/role.enum"
 
 import { ValidateMongoId } from "../utils/validate-mongoId"
 
-@Controller({
-	path: "users",
-	version: "1",
-})
+@Controller("users")
 export class UserController {
 	constructor(private userService: UserService) {}
 

@@ -1,4 +1,12 @@
-import { Controller, Post, Body, HttpCode, Get, Patch } from "@nestjs/common"
+import {
+	Controller,
+	Post,
+	Body,
+	HttpCode,
+	Get,
+	Patch,
+	Query,
+} from "@nestjs/common"
 
 import { AuthService } from "./auth.sevice"
 import { SignupDto, LoginDto, UpdatePasswordDto } from "./auth.dto"
@@ -6,10 +14,7 @@ import { Auth } from "./auth.decorator"
 
 import { User } from "../user/user.decorator"
 
-@Controller({
-	version: "1",
-	path: "auth",
-})
+@Controller("auth")
 export class AuthController {
 	constructor(private authService: AuthService) {}
 

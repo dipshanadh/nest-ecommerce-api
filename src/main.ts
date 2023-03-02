@@ -8,9 +8,7 @@ async function bootstrap() {
 
 	const app = await NestFactory.create(AppModule)
 
-	app.enableVersioning({
-		type: VersioningType.URI,
-	})
+	app.setGlobalPrefix("/api/v1")
 
 	app.useGlobalPipes(
 		new ValidationPipe({

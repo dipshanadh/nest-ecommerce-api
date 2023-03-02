@@ -7,6 +7,9 @@ export interface IUser {
 	phone: string
 	role: Role
 	createdAt: Date
+	resetPasswordToken: string
+	resetPasswordExpire: Date
 	getSignedJwtToken(): string
 	matchPassword(enteredPwd: string): Promise<boolean>
+	getResetPasswordToken(): string
 }

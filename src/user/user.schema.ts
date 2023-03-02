@@ -1,6 +1,7 @@
 import { Schema } from "mongoose"
 import * as jwt from "jsonwebtoken"
 import * as bcrypt from "bcryptjs"
+import * as crypto from "crypto"
 
 import { IUser } from "./user.interface"
 import { Role } from "../role/role.enum"
@@ -30,6 +31,8 @@ export const UserSchema = new Schema<IUser>({
 		enum: [Role.Admin, Role.User],
 		default: Role.User,
 	},
+	resetPasswordToken: String,
+	resetPasswordExpire: Date,
 	createdAt: {
 		type: Date,
 		default: Date.now,
@@ -51,4 +54,18 @@ UserSchema.methods.getSignedJwtToken = function () {
 
 UserSchema.methods.matchPassword = async function (enteredPwd: string) {
 	return await bcrypt.compare(enteredPwd, this.password)
+}
+
+UserSchema.methods.getResetPasswordToken = function () {
+	const resetToken = crypto.randomBytes(20).toString("base64url")
+
+	this.resetPasswordToken = crypto
+		.createHash("sha256")
+		.update(resetToken)
+		.digest("base64")
+
+	// Set expiry to current time plus 10 minutes (10 * 60 * 1000 milliseconds)
+	this.resetPasswordExpire = Date.now() + 5 * 60 * 100
+
+	return resetToken
 }

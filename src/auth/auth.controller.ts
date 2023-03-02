@@ -6,6 +6,7 @@ import {
 	Get,
 	Patch,
 	Query,
+	Req,
 } from "@nestjs/common"
 
 import { AuthService } from "./auth.sevice"
@@ -39,5 +40,10 @@ export class AuthController {
 	@Auth()
 	updatePassword(@Body() dto: UpdatePasswordDto, @User() user) {
 		return this.authService.updatePassword(dto, user)
+	}
+
+	@Post("forgot-password")
+	forgotPassword(@Req() req, @Query("email") email) {
+		return this.authService.forgotPassword(req, email)
 	}
 }

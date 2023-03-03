@@ -111,19 +111,38 @@ export class AuthService {
 	}
 
 	async resetPassword(dto: ResetPasswordDto, token: string) {
-		if (!token) throw new BadRequestException(["Invalid token"])
+		if (!token)
+			throw new BadRequestException([
+				"Invalid password reset token",
+				"Request a new password reset link",
+			])
 
 		const resetPasswordToken = crypto
 			.createHash("sha256")
 			.update(token)
 			.digest("base64")
 
-		const user = await this.User.findOne({
-			resetPasswordToken,
-			resetPasswordExpire: { $gt: new Date().getTime() },
-		})
+		const user = await this.User.findOne({ resetPasswordToken }).select(
+			"+resetPasswordExpire",
+		)
 
-		if (!user) throw new BadRequestException(["Invalid token"])
+		if (!user)
+			throw new BadRequestException([
+				"Invalid password reset token",
+				"Request a new password reset link",
+			])
+
+		if (new Date().getTime() > user.resetPasswordExpire) {
+			user.resetPasswordToken = undefined
+			user.resetPasswordExpire = undefined
+
+			await user.save()
+
+			throw new BadRequestException([
+				"Password reset token expired",
+				"Request a new password reset link",
+			])
+		}
 
 		user.password = dto.password
 		user.resetPasswordToken = undefined

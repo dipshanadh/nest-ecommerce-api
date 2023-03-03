@@ -36,7 +36,7 @@ export const UserSchema = new Schema<IUser>({
 		select: false,
 	},
 	resetPasswordExpire: {
-		type: Date,
+		type: Number,
 		select: false,
 	},
 	createdAt: {
@@ -71,7 +71,8 @@ UserSchema.methods.getResetPasswordToken = function () {
 		.digest("base64")
 
 	// Set expiry to current time plus 10 minutes (10 * 60 * 1000 milliseconds)
-	this.resetPasswordExpire = new Date().getTime() + 10 * 60 * 100
+	this.resetPasswordExpire = new Date().getTime()
+	// + 10 * 60 * 100
 
 	return token
 }

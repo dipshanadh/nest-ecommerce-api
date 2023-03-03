@@ -1,8 +1,10 @@
+// libraries
 import { Schema } from "mongoose"
-import * as jwt from "jsonwebtoken"
-import * as bcrypt from "bcryptjs"
-import * as crypto from "crypto"
+import { sign } from "jsonwebtoken"
+import { genSalt, hash, compare } from "bcryptjs"
+import { randomBytes, createHash } from "crypto"
 
+// types
 import { IUser } from "./user.interface"
 import { Role } from "../role/role.enum"
 
@@ -48,31 +50,29 @@ export const UserSchema = new Schema<IUser>({
 UserSchema.pre("save", async function (next) {
 	if (!this.isModified("password")) return next()
 
-	const salt = await bcrypt.genSalt(10)
-	this.password = await bcrypt.hash(this.password, salt)
+	const salt = await genSalt(10)
+	this.password = await hash(this.password, salt)
 })
 
 UserSchema.methods.getSignedJwtToken = function () {
-	return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
+	return sign({ id: this.id }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRE,
 	})
 }
 
 UserSchema.methods.matchPassword = async function (enteredPwd: string) {
-	return await bcrypt.compare(enteredPwd, this.password)
+	return await compare(enteredPwd, this.password)
 }
 
 UserSchema.methods.getResetPasswordToken = function () {
-	const token = crypto.randomBytes(20).toString("base64url")
+	const token = randomBytes(20).toString("base64url")
 
-	this.resetPasswordToken = crypto
-		.createHash("sha256")
+	this.resetPasswordToken = createHash("sha256")
 		.update(token)
 		.digest("base64")
 
 	// Set expiry to current time plus 10 minutes (10 * 60 * 1000 milliseconds)
-	this.resetPasswordExpire = new Date().getTime()
-	// + 10 * 60 * 100
+	this.resetPasswordExpire = new Date().getTime() + 10 * 60 * 100
 
 	return token
 }

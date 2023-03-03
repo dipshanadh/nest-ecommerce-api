@@ -1,3 +1,4 @@
+// nest.js modules
 import {
 	Controller,
 	Get,
@@ -8,13 +9,20 @@ import {
 	Param,
 } from "@nestjs/common/"
 
-import { UserService } from "./user.service"
-import { User } from "./user.decorator"
-import { CreateUserDto, UpdateUserDto } from "./user.dto"
-
-import { Auth } from "../auth/auth.decorator"
+// types
 import { Role } from "../role/role.enum"
 
+// DTOs
+import { CreateUserDto, UpdateUserDto } from "./user.dto"
+
+// decorators
+import { Auth } from "../auth/auth.decorator"
+import { User } from "./user.decorator"
+
+// services
+import { UserService } from "./user.service"
+
+// utils
 import { ValidateMongoId } from "../utils/validate-mongoId"
 
 @Controller("users")

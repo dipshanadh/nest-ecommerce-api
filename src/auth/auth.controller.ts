@@ -1,3 +1,4 @@
+// nest.js modules
 import {
 	Controller,
 	Post,
@@ -10,18 +11,23 @@ import {
 	Put,
 } from "@nestjs/common"
 
+// types
 import { Request } from "express"
 
-import { AuthService } from "./auth.sevice"
+// DTOs
 import {
 	SignupDto,
 	LoginDto,
 	UpdatePasswordDto,
 	ResetPasswordDto,
 } from "./auth.dto"
-import { Auth } from "./auth.decorator"
 
+// decorators
+import { Auth } from "./auth.decorator"
 import { User } from "../user/user.decorator"
+
+// services
+import { AuthService } from "./auth.sevice"
 
 @Controller("auth")
 export class AuthController {

@@ -1,3 +1,4 @@
+// nest.js modules
 import {
 	Injectable,
 	BadRequestException,
@@ -6,18 +7,24 @@ import {
 	InternalServerErrorException,
 } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import * as crypto from "crypto"
 
+// libraries
+import { createHash } from "crypto"
+
+// types
 import { Model } from "mongoose"
 import { Request } from "express"
-
 import { IUser } from "../user/user.interface"
+
+// DTOs
 import {
 	SignupDto,
 	LoginDto,
 	UpdatePasswordDto,
 	ResetPasswordDto,
 } from "./auth.dto"
+
+// utils
 import { sendEmail } from "../utils/sendEmail"
 
 @Injectable()
@@ -117,8 +124,7 @@ export class AuthService {
 				"Request a new password reset link",
 			])
 
-		const resetPasswordToken = crypto
-			.createHash("sha256")
+		const resetPasswordToken = createHash("sha256")
 			.update(token)
 			.digest("base64")
 

@@ -1,3 +1,4 @@
+// nest.js modules
 import {
 	Injectable,
 	NotFoundException,
@@ -6,11 +7,13 @@ import {
 } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 
+// types
 import { Model } from "mongoose"
 import { Role } from "../role/role.enum"
-
-import { CreateUserDto, UpdateUserDto } from "./user.dto"
 import { IUser } from "./user.interface"
+
+// DTOs
+import { CreateUserDto, UpdateUserDto } from "./user.dto"
 
 @Injectable()
 export class UserService {

@@ -1,11 +1,19 @@
+// nest.js modules
 import { Controller, Get, Param, Post, Body, Delete, Put } from "@nestjs/common"
 
-import { ProductService } from "./product.service"
-import { ProductDto } from "./product.dto"
-
-import { Auth } from "../auth/auth.decorator"
+// types
 import { Role } from "../role/role.enum"
 
+// DTOs
+import { ProductDto } from "./product.dto"
+
+// decorators
+import { Auth } from "../auth/auth.decorator"
+
+// services
+import { ProductService } from "./product.service"
+
+// utils
 import { ValidateMongoId } from "../utils/validate-mongoId"
 
 @Controller("products")

@@ -1,3 +1,4 @@
+// nest.js modules
 import {
 	Injectable,
 	CanActivate,
@@ -5,9 +6,12 @@ import {
 	UnauthorizedException,
 } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import * as jwt from "jsonwebtoken"
 
-import { IncomingMessage } from "http"
+// libraries
+import { verify } from "jsonwebtoken"
+
+// types
+import { Request } from "express"
 import { Model } from "mongoose"
 import { IUser } from "../user/user.interface"
 
@@ -16,14 +20,12 @@ export class AuthGuard implements CanActivate {
 	constructor(@InjectModel("User") private readonly User: Model<IUser>) {}
 
 	async canActivate(ctx: ExecutionContext) {
-		const request: IncomingMessage & { user } = ctx
-			.switchToHttp()
-			.getRequest()
+		const request: Request & { user } = ctx.switchToHttp().getRequest()
 
 		try {
 			const token = this.getToken(request)
 
-			const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET)
+			const decodedToken: any = verify(token, process.env.JWT_SECRET)
 
 			const user = await this.User.findById(decodedToken.id)
 
@@ -61,7 +63,7 @@ export class AuthGuard implements CanActivate {
 		}
 	}
 
-	protected getToken(request: IncomingMessage) {
+	protected getToken(request: Request) {
 		const authorization = request.headers.authorization
 
 		if (!(authorization && authorization.startsWith("Bearer")))

@@ -1,6 +1,6 @@
 import { createTransport, SendMailOptions } from "nodemailer"
 
-export interface mailOptions {
+interface mailOptions {
 	to: string
 	subject: string
 	html: string

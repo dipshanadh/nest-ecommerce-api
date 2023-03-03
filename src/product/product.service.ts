@@ -1,9 +1,13 @@
+// nest.js modules
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 
+// types
 import { Model } from "mongoose"
-import { ProductDto } from "./product.dto"
 import { IProduct } from "./product.interface"
+
+// DTOs
+import { ProductDto } from "./product.dto"
 
 @Injectable()
 export class ProductService {

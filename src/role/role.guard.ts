@@ -1,3 +1,4 @@
+// nest.js modules
 import {
 	Injectable,
 	CanActivate,
@@ -6,6 +7,7 @@ import {
 } from "@nestjs/common"
 import { Reflector } from "@nestjs/core"
 
+// types
 import { Role } from "./role.enum"
 
 @Injectable()

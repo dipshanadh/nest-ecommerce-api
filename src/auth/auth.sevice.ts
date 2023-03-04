@@ -138,7 +138,7 @@ export class AuthService {
 				"Request a new password reset link",
 			])
 
-		if (new Date().getTime() > user.resetPasswordExpire) {
+		if (Date.now() > user.resetPasswordExpire) {
 			user.resetPasswordToken = undefined
 			user.resetPasswordExpire = undefined
 

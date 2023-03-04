@@ -72,7 +72,7 @@ UserSchema.methods.getResetPasswordToken = function () {
 		.digest("base64")
 
 	// Set expiry to current time plus 10 minutes (10 * 60 * 1000 milliseconds)
-	this.resetPasswordExpire = new Date().getTime() + 10 * 60 * 100
+	this.resetPasswordExpire = Date.now() + 10 * 60 * 100
 
 	return token
 }

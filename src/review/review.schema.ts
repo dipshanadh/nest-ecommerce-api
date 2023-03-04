@@ -34,3 +34,6 @@ export const ReviewSchema = new Schema<IReview>({
 		default: Date.now,
 	},
 })
+
+// Prevent user from submitting more than one review per product
+ReviewSchema.index({ product: 1, user: 1 }, { unique: true })

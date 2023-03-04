@@ -12,15 +12,15 @@ import {
 // types
 import { Role } from "../role/role.enum"
 
-// DTOs
-import { CreateUserDto, UpdateUserDto } from "./user.dto"
-
 // decorators
 import { Auth } from "../auth/auth.decorator"
 import { User } from "./user.decorator"
 
 // services
 import { UserService } from "./user.service"
+
+// DTOs
+import { CreateUserDto, UpdateUserDto } from "./user.dto"
 
 // utils
 import { ValidateMongoId } from "../utils/validate-mongoId"

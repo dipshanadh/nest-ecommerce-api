@@ -8,6 +8,9 @@ import { User } from "../user/user.decorator"
 // services
 import { ReviewService } from "./review.service"
 
+// DTOs
+import { ReviewDto } from "./review.dto"
+
 @Controller("reviews")
 export class ReviewController {
 	constructor(private reviewService: ReviewService) {}
@@ -19,7 +22,7 @@ export class ReviewController {
 
 	@Post("/")
 	@Auth()
-	createReview(@Body() dto, @User() user) {
+	createReview(@Body() dto: ReviewDto, @User() user) {
 		return this.reviewService.createReview(dto, user)
 	}
 }

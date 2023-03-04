@@ -4,14 +4,14 @@ import { Controller, Get, Param, Post, Body, Delete, Put } from "@nestjs/common"
 // types
 import { Role } from "../role/role.enum"
 
-// DTOs
-import { ProductDto } from "./product.dto"
-
 // decorators
 import { Auth } from "../auth/auth.decorator"
 
 // services
 import { ProductService } from "./product.service"
+
+// DTOs
+import { ProductDto } from "./product.dto"
 
 // utils
 import { ValidateMongoId } from "../utils/validate-mongoId"

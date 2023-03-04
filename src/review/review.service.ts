@@ -6,6 +6,9 @@ import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 import { IReview } from "./review.interface"
 
+// DTOs
+import { ReviewDto } from "./review.dto"
+
 @Injectable()
 export class ReviewService {
 	constructor(
@@ -18,17 +21,19 @@ export class ReviewService {
 		return { reviews }
 	}
 
-	async createReview(dto, user) {
-		const createdReview = await this.Review.findOne({
+	async createReview(dto: ReviewDto, user) {
+		let review = await this.Review.findOne({
 			user: user.id,
-			bootcamp: dto.bootcamp,
+			product: dto.product,
 		})
 
-		if (createdReview)
+		if (review)
 			throw new BadRequestException([
-				"A user can create more than one review for a product",
+				"A user can not create more than one review for a product",
 			])
 
-		return {}
+		review = await this.Review.create({ ...dto, user: user.id })
+
+		return { review }
 	}
 }

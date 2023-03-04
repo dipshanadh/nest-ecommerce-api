@@ -7,7 +7,7 @@ export interface IReview {
 	title: string
 	text: string
 	rating: number
-	product: string | Types.ObjectId | IProduct
-	user: string | Types.ObjectId | IUser
+	product: Types.ObjectId | IProduct
+	user: Types.ObjectId | IUser
 	createdAt: Date
 }

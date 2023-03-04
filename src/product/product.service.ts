@@ -22,7 +22,10 @@ export class ProductService {
 	}
 
 	async getProduct(id: string) {
-		const product = await this.Product.findById(id)
+		const product = await this.Product.findById(id).populate({
+			path: "reviews",
+			select: "title text rating user -product",
+		})
 
 		if (!product)
 			throw new NotFoundException([

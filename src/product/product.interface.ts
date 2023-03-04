@@ -1,3 +1,5 @@
+import { IReview } from "../review/review.interface"
+
 export enum Category {
 	"desktops",
 	"computer accessories",
@@ -19,4 +21,5 @@ export interface IProduct {
 	category: string
 	rating: number
 	image: string
+	reviews: IReview
 }

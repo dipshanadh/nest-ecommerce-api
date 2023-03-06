@@ -11,6 +11,7 @@ import {
 
 // types
 import { Role } from "../role/role.enum"
+import { UserDocument } from "./user.schema"
 
 // decorators
 import { Auth } from "../auth/auth.decorator"
@@ -51,14 +52,17 @@ export class UserController {
 	updateUser(
 		@Param("id", ValidateMongoId) id: string,
 		@Body() dto: UpdateUserDto,
-		@User() user,
+		@User() user: UserDocument,
 	) {
 		return this.userService.updateUser(id, dto, user)
 	}
 
 	@Delete("/:id")
 	@Auth()
-	deleteUser(@Param("id", ValidateMongoId) id: string, @User() user) {
+	deleteUser(
+		@Param("id", ValidateMongoId) id: string,
+		@User() user: UserDocument,
+	) {
 		return this.userService.deleteUser(id, user)
 	}
 }

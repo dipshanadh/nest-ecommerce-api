@@ -33,7 +33,7 @@ export class ReviewService {
 		return { reviews }
 	}
 
-	async createReview(dto: ReviewDto, user) {
+	async createReview(dto: ReviewDto, user: UserDocument) {
 		let review = await this.Review.findOne({
 			user: user.id,
 			product: dto.product,

@@ -13,6 +13,7 @@ import {
 
 // types
 import { Request } from "express"
+import { UserDocument } from "../user/user.schema"
 
 // DTOs
 import {
@@ -46,13 +47,13 @@ export class AuthController {
 
 	@Get("profile")
 	@Auth()
-	getCurrentUser(@User() user) {
+	getCurrentUser(@User() user: UserDocument) {
 		return { user }
 	}
 
 	@Patch("update-password")
 	@Auth()
-	updatePassword(@Body() dto: UpdatePasswordDto, @User() user) {
+	updatePassword(@Body() dto: UpdatePasswordDto, @User() user: UserDocument) {
 		return this.authService.updatePassword(dto, user)
 	}
 

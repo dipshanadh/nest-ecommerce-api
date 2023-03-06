@@ -1,6 +1,9 @@
 // nest.js modules
 import { Controller, Get, Post, Body } from "@nestjs/common"
 
+// types
+import { UserDocument } from "../user/user.schema"
+
 // decorators
 import { Auth } from "../auth/auth.decorator"
 import { User } from "../user/user.decorator"
@@ -22,7 +25,7 @@ export class ReviewController {
 
 	@Post("/")
 	@Auth()
-	createReview(@Body() dto: ReviewDto, @User() user) {
+	createReview(@Body() dto: ReviewDto, @User() user: UserDocument) {
 		return this.reviewService.createReview(dto, user)
 	}
 }

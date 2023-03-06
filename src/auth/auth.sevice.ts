@@ -67,7 +67,7 @@ export class AuthService {
 		return { token: user.getSignedJwtToken() }
 	}
 
-	async updatePassword(dto: UpdatePasswordDto, currentUser) {
+	async updatePassword(dto: UpdatePasswordDto, currentUser: UserDocument) {
 		const user = await this.User.findById(currentUser.id).select(
 			"+password",
 		)

@@ -13,14 +13,18 @@ import { verify } from "jsonwebtoken"
 // types
 import { Request } from "express"
 import { Model } from "mongoose"
-import { IUser } from "../user/user.interface"
+import { User, UserDocument } from "../user/user.schema"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-	constructor(@InjectModel("User") private readonly User: Model<IUser>) {}
+	constructor(
+		@InjectModel(User.name) private readonly User: Model<UserDocument>,
+	) {}
 
 	async canActivate(ctx: ExecutionContext) {
-		const request: Request & { user } = ctx.switchToHttp().getRequest()
+		const request: Request & { user: UserDocument } = ctx
+			.switchToHttp()
+			.getRequest()
 
 		try {
 			const token = this.getToken(request)

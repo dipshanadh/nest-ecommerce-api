@@ -14,7 +14,7 @@ import { createHash } from "crypto"
 // types
 import { Model } from "mongoose"
 import { Request } from "express"
-import { IUser } from "../user/user.interface"
+import { User, UserDocument } from "../user/user.schema"
 
 // DTOs
 import {
@@ -29,7 +29,9 @@ import { sendEmail } from "../utils/sendEmail"
 
 @Injectable()
 export class AuthService {
-	constructor(@InjectModel("User") private readonly User: Model<IUser>) {}
+	constructor(
+		@InjectModel(User.name) private readonly User: Model<UserDocument>,
+	) {}
 
 	async signup(dto: SignupDto) {
 		let user = await this.User.findOne({

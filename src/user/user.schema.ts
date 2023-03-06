@@ -1,51 +1,46 @@
-// libraries
-import { Schema } from "mongoose"
+import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose"
+import { HydratedDocument } from "mongoose"
+
 import { sign } from "jsonwebtoken"
 import { genSalt, hash, compare } from "bcryptjs"
 import { randomBytes, createHash } from "crypto"
 
-// types
-import { IUser } from "./user.interface"
 import { Role } from "../role/role.enum"
 
-export const UserSchema = new Schema<IUser>({
-	name: {
-		type: String,
-		required: true,
-	},
-	email: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-	password: {
-		type: String,
-		required: true,
-		minlength: 6,
-		select: false,
-	},
-	phone: {
-		type: String,
-		required: true,
-	},
-	role: {
-		type: String,
-		enum: [Role.Admin, Role.User],
-		default: Role.User,
-	},
-	resetPasswordToken: {
-		type: String,
-		select: false,
-	},
-	resetPasswordExpire: {
-		type: Number,
-		select: false,
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-})
+export type UserDocument = HydratedDocument<User>
+
+@Schema()
+export class User {
+	@Prop({ required: true })
+	name: string
+
+	@Prop({ required: true, unique: true })
+	email: string
+
+	@Prop({ required: true, minlength: 6, select: false })
+	password: string
+
+	@Prop({ required: true })
+	phone: string
+
+	@Prop({ enum: [Role.Admin, Role.User], default: Role.User })
+	role: string
+
+	@Prop({ select: false })
+	resetPasswordToken: string
+
+	@Prop({ select: false })
+	resetPasswordExpire: number
+
+	@Prop({ default: Date.now })
+	createdAt: Date
+
+	getSignedJwtToken: Function
+	matchPassword: Function
+	getResetPasswordToken: Function
+}
+
+export const UserSchema = SchemaFactory.createForClass(User)
 
 UserSchema.pre("save", async function (next) {
 	if (!this.isModified("password")) return next()
@@ -71,7 +66,6 @@ UserSchema.methods.getResetPasswordToken = function () {
 		.update(token)
 		.digest("base64")
 
-	// Set expiry to current time plus 10 minutes (10 * 60 * 1000 milliseconds)
 	this.resetPasswordExpire = Date.now() + 10 * 60 * 100
 
 	return token

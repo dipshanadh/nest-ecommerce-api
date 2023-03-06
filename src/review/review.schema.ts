@@ -1,39 +1,32 @@
-import { Schema, Types } from "mongoose"
+import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose"
+import { HydratedDocument, Types } from "mongoose"
 
-import { IReview } from "./review.interface"
+import { User } from "../user/user.schema"
+import { Product } from "../product/product.schema"
 
-export const ReviewSchema = new Schema<IReview>({
-	title: {
-		type: String,
-		require: true,
-		maxlength: 100,
-	},
-	text: {
-		type: String,
-		require: true,
-		maxlength: 500,
-	},
-	rating: {
-		type: Number,
-		min: 1,
-		max: 5,
-		default: 1,
-	},
-	product: {
-		type: Types.ObjectId,
-		ref: "Product",
-		required: true,
-	},
-	user: {
-		type: Types.ObjectId,
-		ref: "User",
-		required: true,
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-})
+export type ReviewDocument = HydratedDocument<Review>
 
-// Prevent user from submitting more than one review per product
+@Schema()
+export class Review {
+	@Prop({ required: true, maxlength: 100 })
+	title: string
+
+	@Prop({ required: true, maxlength: 500 })
+	text: string
+
+	@Prop({ min: 1, max: 5, default: 1 })
+	rating: number
+
+	@Prop({ type: Types.ObjectId, ref: User.name, required: true })
+	user: User
+
+	@Prop({ type: Types.ObjectId, ref: User.name, required: true })
+	product: Product
+
+	@Prop({ default: Date.now })
+	createdAt: Date
+}
+
+export const ReviewSchema = SchemaFactory.createForClass(Review)
+
 ReviewSchema.index({ product: 1, user: 1 }, { unique: true })

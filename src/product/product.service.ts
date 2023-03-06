@@ -4,7 +4,9 @@ import { InjectModel } from "@nestjs/mongoose"
 
 // types
 import { Model } from "mongoose"
-import { IProduct } from "./product.interface"
+
+// schema
+import { Product, ProductDocument } from "./product.schema"
 
 // DTOs
 import { ProductDto } from "./product.dto"
@@ -12,7 +14,8 @@ import { ProductDto } from "./product.dto"
 @Injectable()
 export class ProductService {
 	constructor(
-		@InjectModel("Product") private readonly Product: Model<IProduct>,
+		@InjectModel(Product.name)
+		private readonly Product: Model<ProductDocument>,
 	) {}
 
 	async getProducts() {

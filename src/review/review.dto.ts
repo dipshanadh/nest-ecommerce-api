@@ -1,4 +1,4 @@
-import { MaxLength, IsPositive, IsMongoId } from "class-validator"
+import { MaxLength, IsMongoId, Max, IsPositive } from "class-validator"
 
 import { Types } from "mongoose"
 
@@ -13,9 +13,8 @@ export class ReviewDto {
 	})
 	text: string
 
-	@IsPositive({
-		message: "Enter a valid rating from 1 to 5",
-	})
+	@IsPositive({ message: "Enter a valid rating from 1 to 5" })
+	@Max(5, { message: "Enter a valid rating from 1 to 5" })
 	rating: number
 
 	@IsMongoId({ message: "Invalid Product ID" })

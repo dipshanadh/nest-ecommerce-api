@@ -1,53 +1,54 @@
-import { Schema } from "mongoose"
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
+import { HydratedDocument } from "mongoose"
 
-import { IProduct, Category } from "./product.interface"
+export type ProductDocument = HydratedDocument<Product>
 
-export const ProductSchema = new Schema<IProduct>(
-	{
-		name: {
-			type: String,
-			required: true,
-			maxlength: 100,
-		},
-		description: {
-			type: String,
-			required: true,
-			maxlength: 2000,
-		},
-		price: {
-			type: Number,
-			required: true,
-			default: 0,
-			min: 0,
-		},
-		currentInStock: {
-			type: Number,
-			required: true,
-			default: 1,
-			min: 1,
-		},
-		category: {
-			type: String,
-			required: true,
-			enum: Category,
-		},
-		rating: {
-			type: Number,
-			required: true,
-			default: 0,
-		},
-		image: {
-			type: String,
-		},
-	},
-	{
-		id: false,
-		toJSON: { virtuals: true },
-		toObject: { virtuals: true },
-	},
-)
+export enum Category {
+	"desktops",
+	"computer accessories",
+	"laptops",
+	"laptop parts",
+	"cctv",
+	"printers and scanners",
+	"networking and wifi",
+	"gaming",
+	"storage and memory",
+	"gift items",
+}
 
-// Reverse populate using `virtual populate`
+@Schema({
+	toJSON: { virtuals: true },
+	toObject: { virtuals: true },
+	id: false,
+})
+export class Product {
+	@Prop({ required: true, maxlength: 100 })
+	name: string
+
+	@Prop({ required: true, maxlength: 2000 })
+	description: string
+
+	@Prop({ required: true, default: 0, min: 0 })
+	price: number
+
+	@Prop({ required: true, default: 1, min: 1 })
+	currentInStock: number
+
+	@Prop({ required: true, enum: Category })
+	category: string
+
+	@Prop({ default: 0 })
+	averageRating: number
+
+	@Prop()
+	image: string
+
+	@Prop({ default: Date.now })
+	createdAt: Date
+}
+
+export const ProductSchema = SchemaFactory.createForClass(Product)
+
 ProductSchema.virtual("reviews", {
 	ref: "Review",
 	localField: "_id",

@@ -1,6 +1,6 @@
 import { IsEnum, MaxLength, IsPositive } from "class-validator"
 
-import { Category } from "./product.interface"
+import { Category } from "./product.schema"
 
 export class ProductDto {
 	@MaxLength(100, {

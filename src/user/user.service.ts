@@ -10,14 +10,16 @@ import { InjectModel } from "@nestjs/mongoose"
 // types
 import { Model } from "mongoose"
 import { Role } from "../role/role.enum"
-import { IUser } from "./user.interface"
+import { User, UserDocument } from "./user.schema"
 
 // DTOs
 import { CreateUserDto, UpdateUserDto } from "./user.dto"
 
 @Injectable()
 export class UserService {
-	constructor(@InjectModel("User") private readonly User: Model<IUser>) {}
+	constructor(
+		@InjectModel(User.name) private readonly User: Model<UserDocument>,
+	) {}
 
 	async getUsers() {
 		const users = await this.User.find()

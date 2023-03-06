@@ -4,7 +4,9 @@ import { InjectModel } from "@nestjs/mongoose"
 
 // types
 import { Model } from "mongoose"
-import { IReview } from "./review.interface"
+
+// schema
+import { Review, ReviewDocument } from "./review.schema"
 
 // DTOs
 import { ReviewDto } from "./review.dto"
@@ -12,7 +14,8 @@ import { ReviewDto } from "./review.dto"
 @Injectable()
 export class ReviewService {
 	constructor(
-		@InjectModel("Review") private readonly Review: Model<IReview>,
+		@InjectModel(Review.name)
+		private readonly Review: Model<ReviewDocument>,
 	) {}
 
 	async getReviews() {

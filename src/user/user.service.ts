@@ -54,7 +54,11 @@ export class UserService {
 		return { user }
 	}
 
-	async updateUser(id: string, dto: UpdateUserDto, currentUser) {
+	async updateUser(
+		id: string,
+		dto: UpdateUserDto,
+		currentUser: UserDocument,
+	) {
 		const user = await this.User.findById(id)
 
 		if (!user)
@@ -74,7 +78,7 @@ export class UserService {
 		return { user }
 	}
 
-	async deleteUser(id: string, currentUser) {
+	async deleteUser(id: string, currentUser: UserDocument) {
 		const user = await this.User.findById(id)
 
 		if (!user)

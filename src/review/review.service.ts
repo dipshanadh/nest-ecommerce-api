@@ -6,6 +6,7 @@ import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 
 // schema
+import { UserDocument } from "../user/user.schema"
 import { Review, ReviewDocument } from "./review.schema"
 
 // DTOs
@@ -20,6 +21,14 @@ export class ReviewService {
 
 	async getReviews() {
 		const reviews = await this.Review.find()
+			.populate({
+				path: "user",
+				select: "id name",
+			})
+			.populate({
+				path: "product",
+				select: "id name",
+			})
 
 		return { reviews }
 	}

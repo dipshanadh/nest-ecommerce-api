@@ -9,9 +9,9 @@ import { InjectModel } from "@nestjs/mongoose"
 
 // types
 import { Model, Types } from "mongoose"
+import { UserDocument } from "../user/user.schema"
 
 // schema
-import { UserDocument } from "../user/user.schema"
 import { Product, ProductDocument } from "../product/product.schema"
 import { Review, ReviewDocument } from "./review.schema"
 
@@ -105,7 +105,7 @@ export class ReviewService {
 				"The current user can't access this resource",
 			])
 
-		await review.remove()
+		await review.deleteOne()
 
 		await this.Product.findByIdAndUpdate(review.product, {
 			averageRating: await this.getAverageRating(review.product),

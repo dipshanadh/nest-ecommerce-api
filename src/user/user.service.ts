@@ -10,7 +10,10 @@ import { InjectModel } from "@nestjs/mongoose"
 // types
 import { Model } from "mongoose"
 import { Role } from "../role/role.enum"
+
+// schema
 import { User, UserDocument } from "./user.schema"
+import { Review, ReviewDocument } from "../review/review.schema"
 
 // DTOs
 import { CreateUserDto, UpdateUserDto } from "./user.dto"
@@ -19,6 +22,8 @@ import { CreateUserDto, UpdateUserDto } from "./user.dto"
 export class UserService {
 	constructor(
 		@InjectModel(User.name) private readonly User: Model<UserDocument>,
+		@InjectModel(Review.name)
+		private readonly Review: Model<ReviewDocument>,
 	) {}
 
 	async getUsers() {
@@ -88,7 +93,9 @@ export class UserService {
 				"The current user can't access this resource",
 			])
 
-		await user.delete()
+		await user.deleteOne()
+
+		await this.Review.deleteMany({ user: user._id })
 
 		return {}
 	}

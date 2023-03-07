@@ -10,7 +10,7 @@ import { ReviewService } from "./review.service"
 
 @Module({
 	imports: [
-		UserModule,
+		forwardRef(() => UserModule),
 		forwardRef(() => ProductModule),
 		MongooseModule.forFeature([
 			{ name: Review.name, schema: ReviewSchema },

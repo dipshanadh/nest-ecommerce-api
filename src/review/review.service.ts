@@ -53,12 +53,12 @@ export class ReviewService {
 			user: new Types.ObjectId(user.id),
 		})
 
+		await this.Product.findByIdAndUpdate(review.product, {
+			averageRating: await this.getAverageRating(review.product),
+		})
+
 		await review.populate({ path: "user", select: "id name" })
 		await review.populate({ path: "product", select: "id name" })
-
-		await this.Product.findByIdAndUpdate(dto.product, {
-			averageRating: await this.getAverageRating(dto.product),
-		})
 
 		return { review }
 	}

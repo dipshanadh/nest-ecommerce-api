@@ -39,10 +39,7 @@ export class UserService {
 
 		user = await this.User.create(dto)
 
-		const userObject = user.toObject()
-		delete userObject.password
-
-		return { user: userObject }
+		return { ...user, password: undefined }
 	}
 
 	async getUser(id: string) {

@@ -24,7 +24,7 @@ export class User {
 	phone: string
 
 	@Prop({ enum: [Role.Admin, Role.User], default: Role.User })
-	role: string
+	role: Role
 
 	@Prop({ select: false })
 	resetPasswordToken: string

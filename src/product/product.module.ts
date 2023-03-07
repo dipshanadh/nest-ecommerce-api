@@ -14,6 +14,11 @@ import { UserModule } from "../user/user.module"
 			{ name: Product.name, schema: ProductSchema },
 		]),
 	],
+	exports: [
+		MongooseModule.forFeature([
+			{ name: Product.name, schema: ProductSchema },
+		]),
+	],
 	controllers: [ProductController],
 	providers: [ProductService],
 })

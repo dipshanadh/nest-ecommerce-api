@@ -7,6 +7,7 @@ import { Model } from "mongoose"
 
 // schema
 import { Product, ProductDocument } from "./product.schema"
+import { Review, ReviewDocument } from "../review/review.schema"
 
 // DTOs
 import { ProductDto } from "./product.dto"
@@ -16,6 +17,9 @@ export class ProductService {
 	constructor(
 		@InjectModel(Product.name)
 		private readonly Product: Model<ProductDocument>,
+
+		@InjectModel(Review.name)
+		private readonly Review: Model<ReviewDocument>,
 	) {}
 
 	async getProducts() {
@@ -62,6 +66,8 @@ export class ProductService {
 			throw new NotFoundException([
 				"No product found with the entered ID",
 			])
+
+		await this.Review.deleteMany({ product: product._id })
 
 		return {}
 	}

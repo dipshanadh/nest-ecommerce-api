@@ -81,7 +81,7 @@ export class UserService {
 		if (!user)
 			throw new NotFoundException(["No user found with the entered ID"])
 
-		if (currentUser.id !== user.id && currentUser.role !== Role.Admin)
+		if (currentUser.id !== user.id)
 			throw new ForbiddenException([
 				"The current user can't access this resource",
 			])

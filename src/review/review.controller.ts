@@ -1,5 +1,5 @@
 // nest.js modules
-import { Controller, Get, Post, Body, Delete, Param } from "@nestjs/common"
+import { Controller, Get, Post, Body, Delete, Param, Put } from "@nestjs/common"
 
 // types
 import { UserDocument } from "../user/user.schema"
@@ -12,7 +12,7 @@ import { User } from "../user/user.decorator"
 import { ReviewService } from "./review.service"
 
 // DTOs
-import { ReviewDto } from "./review.dto"
+import { CreateReviewDto, UpdateReviewDto } from "./review.dto"
 
 // utils
 import { ValidateMongoId } from "../utils/validate-mongoId"
@@ -28,8 +28,18 @@ export class ReviewController {
 
 	@Post("/")
 	@Auth()
-	createReview(@Body() dto: ReviewDto, @User() user: UserDocument) {
+	createReview(@Body() dto: CreateReviewDto, @User() user: UserDocument) {
 		return this.reviewService.createReview(dto, user)
+	}
+
+	@Put("/:id")
+	@Auth()
+	updateReview(
+		@Param("id", ValidateMongoId) id: string,
+		@Body() dto: UpdateReviewDto,
+		@User() user: UserDocument,
+	) {
+		return this.reviewService.updateReview(id, dto, user)
 	}
 
 	@Delete("/:id")

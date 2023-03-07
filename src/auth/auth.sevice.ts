@@ -80,6 +80,8 @@ export class AuthService {
 
 		await user.save()
 
+		user.password = undefined
+
 		return { user }
 	}
 

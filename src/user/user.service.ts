@@ -39,7 +39,9 @@ export class UserService {
 
 		user = await this.User.create(dto)
 
-		return { ...user, password: undefined }
+		user.password = undefined
+
+		return { user }
 	}
 
 	async getUser(id: string) {

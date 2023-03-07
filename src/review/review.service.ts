@@ -1,5 +1,10 @@
 // nest.js modules
-import { Injectable, BadRequestException } from "@nestjs/common"
+import {
+	Injectable,
+	BadRequestException,
+	NotFoundException,
+	ForbiddenException,
+} from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 
 // types
@@ -51,12 +56,31 @@ export class ReviewService {
 		await review.populate({ path: "user", select: "id name" })
 		await review.populate({ path: "product", select: "id name" })
 
-		// update the average rating of the product everytime
-		const averageRating = await this.getAverageRating(dto.product)
-
-		await this.Product.findByIdAndUpdate(dto.product, { averageRating })
+		await this.Product.findByIdAndUpdate(dto.product, {
+			averageRating: await this.getAverageRating(dto.product),
+		})
 
 		return { review }
+	}
+
+	async deleteReview(id: string, currentUser: UserDocument) {
+		const review = await this.Review.findById(id)
+
+		if (!review)
+			throw new NotFoundException(["No review found with the entered ID"])
+
+		if (currentUser.id !== review.user.toString())
+			throw new ForbiddenException([
+				"The current user can't access this resource",
+			])
+
+		await review.remove()
+
+		await this.Product.findByIdAndUpdate(review.product, {
+			averageRating: await this.getAverageRating(review.product),
+		})
+
+		return {}
 	}
 
 	async getAverageRating(productId: Types.ObjectId) {

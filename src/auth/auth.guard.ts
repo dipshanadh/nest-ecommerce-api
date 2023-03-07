@@ -22,9 +22,7 @@ export class AuthGuard implements CanActivate {
 	) {}
 
 	async canActivate(ctx: ExecutionContext) {
-		const request: Request & { user: UserDocument } = ctx
-			.switchToHttp()
-			.getRequest()
+		const request = ctx.switchToHttp().getRequest()
 
 		try {
 			const token = this.getToken(request)

@@ -18,10 +18,10 @@ export class Review {
 	rating: number
 
 	@Prop({ type: Types.ObjectId, ref: User.name, required: true })
-	user: User
+	user: Types.ObjectId & User
 
 	@Prop({ type: Types.ObjectId, ref: Product.name, required: true })
-	product: Product
+	product: Types.ObjectId & Product
 
 	@Prop({ default: Date.now })
 	createdAt: Date

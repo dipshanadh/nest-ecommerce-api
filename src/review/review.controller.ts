@@ -1,5 +1,5 @@
 // nest.js modules
-import { Controller, Get, Post, Body } from "@nestjs/common"
+import { Controller, Get, Post, Body, Delete, Param } from "@nestjs/common"
 
 // types
 import { UserDocument } from "../user/user.schema"
@@ -14,6 +14,9 @@ import { ReviewService } from "./review.service"
 // DTOs
 import { ReviewDto } from "./review.dto"
 
+// utils
+import { ValidateMongoId } from "../utils/validate-mongoId"
+
 @Controller("reviews")
 export class ReviewController {
 	constructor(private reviewService: ReviewService) {}
@@ -27,5 +30,14 @@ export class ReviewController {
 	@Auth()
 	createReview(@Body() dto: ReviewDto, @User() user: UserDocument) {
 		return this.reviewService.createReview(dto, user)
+	}
+
+	@Delete("/:id")
+	@Auth()
+	deleteReview(
+		@Param("id", ValidateMongoId) id: string,
+		@User() user: UserDocument,
+	) {
+		return this.reviewService.deleteReview(id, user)
 	}
 }

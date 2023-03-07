@@ -5,7 +5,6 @@ import {
 	Body,
 	HttpCode,
 	Get,
-	Patch,
 	Query,
 	Req,
 	Put,
@@ -51,7 +50,7 @@ export class AuthController {
 		return { user }
 	}
 
-	@Patch("update-password")
+	@Put("update-password")
 	@Auth()
 	updatePassword(@Body() dto: UpdatePasswordDto, @User() user: UserDocument) {
 		return this.authService.updatePassword(dto, user)

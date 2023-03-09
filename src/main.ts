@@ -1,5 +1,6 @@
 import { ValidationPipe } from "@nestjs/common"
 import { NestFactory } from "@nestjs/core"
+import { ThrottlerGuard } from "@nestjs/throttler"
 
 import { AppModule } from "./app.module"
 

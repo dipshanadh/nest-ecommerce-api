@@ -13,7 +13,7 @@ import { UserModule } from "./user/user.module"
 	imports: [
 		ConfigModule.forRoot(),
 		MongooseModule.forRoot(process.env.MONGO_URI),
-		ThrottlerModule.forRoot({ ttl: 60, limit: 100 }),
+		ThrottlerModule.forRoot([{ ttl: 100 * 60, limit: 100 }]),
 		UserModule,
 		AuthMoudle,
 		ProductModule,

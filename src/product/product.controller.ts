@@ -75,10 +75,9 @@ export class ProductController {
 					errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
 				}),
 		)
-		photo: Express.Multer.File,
+		image: Express.Multer.File,
 	) {
-		console.log(photo)
-		return this.productService.createProduct(dto)
+		return this.productService.createProduct(dto, image)
 	}
 
 	@Get("/:id")

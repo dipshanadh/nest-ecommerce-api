@@ -39,11 +39,8 @@ export class ProductService {
 		return { product }
 	}
 
-	async createProduct(dto: ProductDto, image: Express.Multer.File) {
-		const product = await this.Product.create({
-			...dto,
-			image: image.filename,
-		})
+	async createProduct(dto: ProductDto) {
+		const product = await this.Product.create(dto)
 
 		return { product }
 	}

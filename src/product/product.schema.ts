@@ -13,7 +13,6 @@ export enum Category {
 	"networking and wifi",
 	"gaming",
 	"storage and memory",
-	"gift items",
 }
 
 @Schema({

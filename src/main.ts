@@ -6,8 +6,7 @@ import { AppModule } from "./app.module"
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
 
-	app.setGlobalPrefix("/api/v1")
-	.useGlobalPipes(
+	app.setGlobalPrefix("/api/v1").useGlobalPipes(
 		new ValidationPipe({
 			whitelist: true,
 		}),
